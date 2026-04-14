@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>중소기업 재무건전성 종합 진단</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="layout">
+    <header class="hero">
+      <p class="badge">기업 신용분석 · 스크리닝</p>
+      <h1>중소기업 대출 심사용 재무건전성 종합 진단</h1>
+      <p class="lead">결산 재무제표 수치를 입력하면 주요 비율, 항목별 점수(1~5), 종합등급(A~E), 적정 금리·한도·담보 권고안을 산출합니다. 실제 심사 판단을 대체하지 않으며 내부 기준에 맞게 가중치·구간을 조정하세요.</p>
+    </header>
+
+    <form id="fin-form" class="panel" novalidate>
+      <h2>입력 (단위: 원, 비율은 자동 산출)</h2>
+
+      <fieldset>
+        <legend>1. 단기 유동성</legend>
+        <div class="grid">
+          <label>유동자산 <input type="number" name="ca" inputmode="decimal" min="0" step="any" placeholder="0" /></label>
+          <label>유동부채 <input type="number" name="cl" inputmode="decimal" min="0" step="any" placeholder="0" /></label>
+          <label>재고자산 <input type="number" name="inv" inputmode="decimal" min="0" step="any" placeholder="0" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. 레버리지</legend>
+        <div class="grid">
+          <label>총부채 <input type="number" name="td" inputmode="decimal" min="0" step="any" placeholder="0" /></label>
+          <label>자본총계 <input type="number" name="eq" inputmode="decimal" step="any" placeholder="0" /></label>
+          <label>영업이익 <input type="number" name="op" inputmode="decimal" step="any" placeholder="0" /></label>
+          <label>이자비용 <input type="number" name="int" inputmode="decimal" min="0" step="any" placeholder="0" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. 수익성 (당기)</legend>
+        <div class="grid">
+          <label>매출액 <input type="number" name="rev" inputmode="decimal" min="0" step="any" placeholder="0" /></label>
+          <label>당기순이익 <input type="number" name="ni" inputmode="decimal" step="any" placeholder="0" /></label>
+          <label>총자산 <input type="number" name="ta" inputmode="decimal" min="0" step="any" placeholder="0" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. 성장성 (전기 대비)</legend>
+        <div class="grid">
+          <label>전기 매출액 <input type="number" name="rev0" inputmode="decimal" min="0" step="any" placeholder="0" /></label>
+          <label>전기 당기순이익 <input type="number" name="ni0" inputmode="decimal" step="any" placeholder="0" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. 현금흐름 (당기)</legend>
+        <div class="grid">
+          <label>영업활동현금흐름 <input type="number" name="ocf" inputmode="decimal" step="any" placeholder="0" /></label>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" class="primary">진단 실행</button>
+        <button type="reset" class="ghost">입력 초기화</button>
+      </div>
+    </form>
+
+    <section id="result" class="panel result hidden" aria-live="polite">
+      <h2>진단 결과</h2>
+
+      <div class="grade-card">
+        <div>
+          <span class="label">종합 등급</span>
+          <p class="grade" id="grade-letter">—</p>
+        </div>
+        <div class="score-block">
+          <span class="label">종합 점수 (1~5)</span>
+          <p class="score" id="grade-score">—</p>
+        </div>
+      </div>
+
+      <h3>산출 비율</h3>
+      <table class="ratio-table">
+        <thead>
+          <tr><th>항목</th><th>값</th><th>해석</th></tr>
+        </thead>
+        <tbody id="ratio-body"></tbody>
+      </table>
+
+      <h3>영역별 점수 (각 1~5, 동일 가중)</h3>
+      <table class="ratio-table">
+        <thead>
+          <tr><th>영역</th><th>점수</th><th>포함 지표</th></tr>
+        </thead>
+        <tbody id="cat-body"></tbody>
+      </table>
+
+      <h3>대출 조건 권고 (참고)</h3>
+      <div class="rec-box" id="loan-rec"></div>
+
+      <p class="disclaimer">본 결과는 교육·스크리닝 목적의 예시 로직이며, 업종·담보·연대보증·신용등급·거래실적 등 비재무 요인과 내부 정책을 반영한 최종 심사와 다를 수 있습니다.</p>
+    </section>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>
